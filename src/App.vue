@@ -1,6 +1,6 @@
 <template>
-	<div id="app">
-		<h1>Tarefas</h1>
+  <div id="app">
+    <h1>{{ 'tarefas' | capitalize }}</h1>
     <div class="wrapper">
       <task-progress-bar v-bind:progress="progress" />
       <task-new v-on:task-added="addTask($event)" />
@@ -10,13 +10,14 @@
         v-on:task-state-changed="changeTaskState($event)"
       />
     </div>
-	</div>
+  </div>
 </template>
 
 <script>
 import TaskGrid from '@/components/TaskGrid';
 import TaskNew from '@/components/TaskNew';
 import TaskProgressBar from '@/components/TaskProgressBar';
+import { assertInt } from '@/utils/Assert.js';
 
 export default {
   name: 'App',
@@ -25,25 +26,16 @@ export default {
     TaskNew,
     TaskProgressBar,
   },
-  directives: {},
-  filters: {},
-  mixins: [],
-  props: {
-
-  },
   data() {
     return {
-      tasks: [
-        // { 'name': 'lavar roupa', 'pending': false },
-        // { 'name': 'estudar', 'pending': true },
-      ]
+      tasks: [],
     }
   },
   computed: {
     progress() {
       const total = this.tasks.length;
       const done = this.tasks.filter(t => !t.pending).length;
-      const calc = this.assertint(done) / this.assertint(total);
+      const calc = assertInt(done) / assertInt(total);
       return (calc || 0) * 100;
     }
   },
@@ -55,46 +47,24 @@ export default {
       deep: true,
     },
   },
-  beforeCreate() {},
-  created() {},
-  beforeMount() {},
   mounted() {
     this.tasks = this.getLocalStorage();
   },
-  beforeUpdate() {},
-  updated() {},
-  activated() {},
-  deactivated() {},
-  beforeDestroy() {},
-  destroyed() {},
   methods: {
-    assertint(value) {
-      if (!value) {
-        return 0;
-      }
-      value = parseInt(value, 10);
-      value = !isNaN(value) ? value : 0;
-      return value;
-    },
     addTask(task) {
       if (task.name) {
         const isNew = this.tasks.filter(t => t.name.toString().toLowerCase() === task.name.toString().toLowerCase()).length === 0;
-        // console.log(task); // eslint-disable-line
         isNew && this.tasks.push({
-          'name': task.name.toString().toLowerCase(),
+          'name': task.name.toString(),
           'pending': task.pending || true,
         });
-        // this.setLocalStorage(this.tasks);
       }
     },
     deleteTask(idx) {
-      // console.log(idx); // eslint-disable-line
       this.tasks.splice(idx, 1);
-      // this.setLocalStorage(this.tasks);
     },
     changeTaskState(idx) {
       this.tasks[idx].pending = !this.tasks[idx].pending;
-      // this.setLocalStorage(this.tasks);
     },
     setLocalStorage(tasks) {
       if (tasks) {
@@ -120,14 +90,19 @@ export default {
 
 <style>
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lato', 'Calibri', 'sans-serif';
   background: linear-gradient(to right, rgb(22, 34, 42), rgb(58, 96, 115));
   color: #FFF;
   margin: 0px;
 }
 
+@font-face {
+  font-family: Collona;
+  src: url('/fonts/sudbury_basin.ttf');
+}
+
 #app {
-  height: 100vh;
+  min-height: calc(100vh - 30px);
   margin: 0px;
 }
 
@@ -135,9 +110,12 @@ body {
   font-weight: 300;
   font-size: 3rem;
   text-align: center;
-  margin: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   height: 50px;
-  font-family: 'Germania One', 'Calibri', 'sans-serif';
+  font-family: 'Collona', 'Germania One', 'Calibri', 'sans-serif';
 }
 
 .wrapper {
@@ -145,7 +123,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 110px);
   position: relative;
 }
 
@@ -174,9 +152,4 @@ body {
   box-shadow: 0 0 20px 5px rgba(255, 255, 255, .1);
   background-color: #ddd;
 }
-
-/* .form-input:focus {
-  background-color: #000;
-  color: #fff;
-} */
 </style>

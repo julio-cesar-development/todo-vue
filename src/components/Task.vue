@@ -1,30 +1,19 @@
 <template>
-	<div class="task" v-bind:class="stateClass" v-on:click.stop="changeTaskState()">
+  <div class="task" v-bind:class="stateClass" v-on:click.stop="changeTaskState()">
     <span class="close" v-on:click.stop="deleteTask()">X</span>
     <span>
-      {{ task.name | capitalize }}
+      {{ task.name }}
     </span>
-	</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'Task',
-  components: {
-
-  },
-  directives: {},
-  filters: {},
-  mixins: [],
   props: {
     task: {
       type: Object,
       required: true,
-    }
-  },
-  data() {
-    return {
-
     }
   },
   computed: {
@@ -35,19 +24,6 @@ export default {
       }
     },
   },
-  watch: {},
-  beforeCreate() {},
-  created() {},
-  beforeMount() {},
-  mounted() {
-
-  },
-  beforeUpdate() {},
-  updated() {},
-  activated() {},
-  deactivated() {},
-  beforeDestroy() {},
-  destroyed() {},
   methods: {
     deleteTask() {
       this.$emit('task-deleted', this.task);
@@ -74,6 +50,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
+  transition: .5s;
 }
 
 .pending {
@@ -102,6 +79,7 @@ export default {
   font-size: 0.8em;
   font-weight: bold;
   cursor: pointer;
+  transition: .5s;
 }
 
 .pending .close {

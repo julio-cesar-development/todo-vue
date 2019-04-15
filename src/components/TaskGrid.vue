@@ -1,6 +1,6 @@
 <template>
-	<div class="task-grid">
-		<template v-if="tasks && tasks.length">
+  <div class="task-grid">
+    <template v-if="tasks && tasks.length">
       <task v-for="(task, idx) in tasks"
         v-bind:task="task"
         v-bind:key="task.name"
@@ -13,7 +13,7 @@
         <p class="no-task">Nenhuma task 😀</p>
       </div>
     </template>
-	</div>
+  </div>
 </template>
 
 <script>
@@ -24,59 +24,15 @@ export default {
   components: {
     Task,
   },
-  directives: {},
-  filters: {},
-  mixins: [],
   props: {
     tasks: {
       type: Array,
       required: true,
     }
   },
-  data() {
-    return {
-
-    }
-  },
-  computed: {
-
-  },
-  watch: {},
-  beforeCreate() {},
-  created() {},
-  beforeMount() {},
-  mounted() {
-
-  },
-  beforeUpdate() {},
-  updated() {},
-  activated() {},
-  deactivated() {},
-  beforeDestroy() {},
-  destroyed() {},
   methods: {
     deleteTask(index) {
-      console.log(index); // eslint-disable-line
       this.$emit('task-deleted', index);
-
-      // if (task.name) {
-      //   const idx = this.tasks.findIndex(t => t.name === task.name);
-      //   // const idx = this.tasks.indexOf(task);
-
-      //   // mutating 'tasks' directly
-      //   const tasksNew = [];
-      //   this.tasks.forEach((t, i) => {
-      //     if (i !== idx) {
-      //       tasksNew.push(t);
-      //     }
-      //   })
-      //   // console.log(tasksNew); // eslint-disable-line
-      //   // this.tasks = tasksNew;
-
-      //   // this.tasks.splice(idx, 1);
-
-      //   this.$emit('task-deleted', idx);
-      // }
     },
     changeTaskState(index) {
       this.$emit('task-state-changed', index);

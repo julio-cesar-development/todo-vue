@@ -1,48 +1,18 @@
 <template>
-	<div class="task-progress">
-		<span class="progress-value">{{ progress.toFixed(2) }} %</span>
+  <div class="task-progress">
+    <span class="progress-value">{{ progress.toFixed(2) }} %</span>
     <div class="progress-bar" v-bind:style="{ 'width': `${progress}%` }"></div>
-	</div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'TaskProgressBar',
-  components: {
-
-  },
-  directives: {},
-  filters: {},
-  mixins: [],
   props: {
     progress: {
       type: Number,
       default: 0,
     }
-  },
-  data() {
-    return {
-
-    }
-  },
-  computed: {
-
-  },
-  watch: {},
-  beforeCreate() {},
-  created() {},
-  beforeMount() {},
-  mounted() {
-
-  },
-  beforeUpdate() {},
-  updated() {},
-  activated() {},
-  deactivated() {},
-  beforeDestroy() {},
-  destroyed() {},
-  methods: {
-
   },
 }
 </script>
@@ -74,5 +44,6 @@ export default {
   height: 20px;
   background-color: #4caf50;
   align-self: flex-start;
+  transition: .5s;
 }
 </style>
