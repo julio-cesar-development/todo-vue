@@ -41,7 +41,7 @@ export default {
 .progress-bar {
   position: absolute;
   border-radius: 8px;
-  height: 20px;
+  height: 18px;
   background-color: #4caf50;
   align-self: flex-start;
   transition: .5s;
