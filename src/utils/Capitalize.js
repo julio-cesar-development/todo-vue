@@ -1,7 +1,11 @@
-export const capitalize = (value) => {
-  if (!value) {
+/**
+ * @param {*} str
+ * @returns the string capitalized
+ */
+export const capitalize = (str) => {
+  if (!str) {
     return '';
   }
-  value = value.toString();
-  return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  str = str.toString();
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 };

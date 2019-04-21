@@ -24,6 +24,11 @@ export default {
   components: {
     Task,
   },
+  data() {
+    return {
+      value: '',
+    }
+  },
   props: {
     tasks: {
       type: Array,
