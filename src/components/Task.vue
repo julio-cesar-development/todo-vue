@@ -1,19 +1,46 @@
 <template>
-  <div class="task" v-bind:class="stateClass" v-on:click.stop="changeTaskState()">
-    <span class="close" v-on:click.stop="deleteTask()">X</span>
+  <div class="task" v-bind:class="stateClass">
+    <span class="icon-rounded icon-rounded--left" v-on:click.stop="changeTaskState()">&check;</span>
+    <span class="icon-rounded icon-rounded--right" v-on:click.stop="deleteTask()">X</span>
     <span>
-      {{ task.name }}
+      <label v-show="!editing" v-text="task.name" v-on:dblclick="editing = true"></label>
+      <input class="task-input"
+        v-show="editing"
+        v-focus="editing"
+        v-bind:value="task.name"
+        v-on:keyup.enter="doneEdit"
+        v-on:keyup.esc="cancelEdit"
+        v-on:blur="doneEdit"
+        v-click-outside="cancelEdit"
+      >
     </span>
   </div>
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside';
+
 export default {
   name: 'Task',
   props: {
     task: {
       type: Object,
       required: true,
+    }
+  },
+  directives: {
+    ClickOutside,
+    focus (el, { value }, { context }) {
+      if (value) {
+        context.$nextTick(() => {
+          el.focus()
+        })
+      }
+    }
+  },
+  data() {
+    return {
+      editing: false,
     }
   },
   computed: {
@@ -25,6 +52,15 @@ export default {
     },
   },
   methods: {
+    doneEdit(e) {
+      this.editing = false;
+      const value = e.target.value.trim();
+      console.log(value); // eslint-disable-line      
+    },
+    cancelEdit(e) {
+      e.target.value = this.task.name;
+      this.editing = false;
+    },
     deleteTask() {
       this.$emit('task-deleted', this.task);
     },
@@ -65,11 +101,10 @@ export default {
   text-decoration: line-through;
 }
 
-.close {
+.icon-rounded {
   box-sizing: border-box;
   position: absolute;
   top: 10px;
-  right: 10px;
   border-radius: 50%;
   height: 20px;
   width: 20px;
@@ -82,11 +117,31 @@ export default {
   transition: .5s;
 }
 
-.pending .close {
+.icon-rounded--left {
+  left: 10px;
+}
+
+.icon-rounded--right {
+  right: 10px;
+}
+
+.pending .icon-rounded {
   background-color: #b73229;
 }
 
-.done .close {
+.done .icon-rounded {
   background-color: #0a8f08;
+}
+
+.task-input {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  padding: 5px;
+}
+
+.task-input.editing {
+  background-color: rgba(255, 255, 255, .5);
+  box-shadow: 0 0 20px 5px rgba(255, 255, 255, .1);
 }
 </style>

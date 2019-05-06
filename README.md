@@ -39,3 +39,11 @@ npm run test
 ```bash
 npm run lint
 ```
+
+## Authors
+
+* **Julio Cesar** - *Initial work* - [Blackdevs](https://blackdevs.com.br)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
