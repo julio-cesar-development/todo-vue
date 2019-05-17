@@ -2,18 +2,16 @@
   <div class="task" v-bind:class="stateClass">
     <span class="icon-rounded icon-rounded--left" v-on:click.stop="changeTaskState()">&check;</span>
     <span class="icon-rounded icon-rounded--right" v-on:click.stop="deleteTask()">X</span>
-    <span>
-      <label v-show="!editing" v-text="task.name" v-on:dblclick="editing = true"></label>
-      <input class="task-input"
-        v-show="editing"
-        v-focus="editing"
-        v-bind:value="task.name"
-        v-on:keyup.enter="doneEdit"
-        v-on:keyup.esc="cancelEdit"
-        v-on:blur="doneEdit"
-        v-click-outside="cancelEdit"
-      >
-    </span>
+    <label v-show="!editing" class="task-label" v-text="task.name" v-on:click.stop="editing = true"></label>
+    <input class="task-input"
+      v-show="editing"
+      v-focus="editing"
+      v-click-outside="cancelEdit"
+      v-bind:value="task.name"
+      v-on:keyup.enter="doneEdit"
+      v-on:keyup.esc="cancelEdit"
+      v-on:blur="cancelEdit"
+    >
   </div>
 </template>
 
@@ -55,10 +53,13 @@ export default {
     doneEdit(e) {
       this.editing = false;
       const value = e.target.value.trim();
-      console.log(value); // eslint-disable-line      
+      if (value) {
+        this.task.name = value;
+      } else {
+        this.deleteTask();
+      }
     },
-    cancelEdit(e) {
-      e.target.value = this.task.name;
+    cancelEdit() {
       this.editing = false;
     },
     deleteTask() {
@@ -98,6 +99,9 @@ export default {
   color: #ddd;
   border-left: 8px solid #0a8f08;
   background-color: #4caf50;
+}
+
+.done label {
   text-decoration: line-through;
 }
 
@@ -133,15 +137,24 @@ export default {
   background-color: #0a8f08;
 }
 
+.task-label {
+  width: 80%;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  word-wrap: break-word;
+}
+
 .task-input {
+  width: 80%;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
   outline: none;
   border: none;
   background-color: transparent;
   padding: 5px;
-}
-
-.task-input.editing {
-  background-color: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .65);
   box-shadow: 0 0 20px 5px rgba(255, 255, 255, .1);
 }
 </style>
