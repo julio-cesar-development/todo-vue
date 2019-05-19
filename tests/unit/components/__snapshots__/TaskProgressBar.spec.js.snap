@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TaskProgressBar.vue TaskProgressBar.vue should match all specifications bellow 1`] = `
+<div class="task-progress"><span class="progress-value">50.00 %</span>
+  <div class="progress-bar" style="width: 50%;"></div>
+</div>
+`;

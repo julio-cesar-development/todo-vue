@@ -1,8 +1,14 @@
 <template>
   <div class="task" v-bind:class="stateClass">
-    <span class="icon-rounded icon-rounded--left" v-on:click.stop="changeTaskState()">&check;</span>
-    <span class="icon-rounded icon-rounded--right" v-on:click.stop="deleteTask()">X</span>
-    <label v-show="!editing" class="task-label" v-text="task.name" v-on:click.stop="editing = true"></label>
+    <span class="icon-rounded icon-rounded--left"
+      v-on:click.stop="changeTaskState()">&check;
+    </span>
+    <span class="icon-rounded icon-rounded--right"
+      v-on:click.stop="deleteTask()">X
+    </span>
+    <label v-show="!editing" class="task-label" v-text="task.name"
+      v-on:click.stop="editing = true">
+    </label>
     <input class="task-input"
       v-show="editing"
       v-focus="editing"
@@ -24,29 +30,29 @@ export default {
     task: {
       type: Object,
       required: true,
-    }
+    },
   },
   directives: {
     ClickOutside,
-    focus (el, { value }, { context }) {
+    focus(el, { value }, { context }) {
       if (value) {
         context.$nextTick(() => {
-          el.focus()
-        })
+          el.focus();
+        });
       }
-    }
+    },
   },
   data() {
     return {
       editing: false,
-    }
+    };
   },
   computed: {
     stateClass() {
       return {
         pending: this.task.pending,
         done: !this.task.pending,
-      }
+      };
     },
   },
   methods: {
@@ -69,7 +75,7 @@ export default {
       this.$emit('task-state-changed', this.task);
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -147,7 +153,7 @@ export default {
 
 .task-input {
   width: 80%;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   text-align: center;
   outline: none;

@@ -2,10 +2,11 @@
  * @param {*} str
  * @returns the string capitalized
  */
-export const capitalize = (str) => {
-  if (!str) {
+const capitalize = (str) => {
+  if (!str || typeof str !== 'string') {
     return '';
   }
-  str = str.toString();
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  return str.toString().charAt(0).toUpperCase() + str.toString().slice(1).toLowerCase();
 };
+
+export default capitalize;

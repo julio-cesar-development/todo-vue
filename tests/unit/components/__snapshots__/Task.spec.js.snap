@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Task.vue Task.vue should match all specifications bellow 1`] = `
+<div class="task done"><span class="icon-rounded icon-rounded--left">✓
+  </span> <span class="icon-rounded icon-rounded--right">X
+  </span> <label class="task-label">Test 01</label> <input class="task-input" style="display: none;"></div>
+`;

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Task from '@/components/Task';
+import Task from '@/components/Task.vue';
 
 export default {
   name: 'TaskGrid',
@@ -27,23 +27,27 @@ export default {
   data() {
     return {
       value: '',
-    }
+    };
   },
   props: {
     tasks: {
       type: Array,
       required: true,
-    }
+    },
   },
   methods: {
     deleteTask(index) {
-      this.$emit('task-deleted', index);
+      if (index !== undefined && index !== null && index !== '') {
+        this.$emit('task-deleted', index);
+      }
     },
     changeTaskState(index) {
-      this.$emit('task-state-changed', index);
+      if (index !== undefined && index !== null && index !== '') {
+        this.$emit('task-state-changed', index);
+      }
     },
   },
-}
+};
 </script>
 
 <style scoped>

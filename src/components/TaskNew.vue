@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       name: '',
-    }
+    };
   },
   mounted() {
     const input = document.querySelector('.form-input');
@@ -29,7 +29,7 @@ export default {
   methods: {
     addTask() {
       if (this.name) {
-        this.$emit('task-added', { 'name' : this.name });
+        this.$emit('task-added', { name: this.name });
         this.clear();
       }
     },
@@ -37,7 +37,7 @@ export default {
       this.name = '';
     },
   },
-}
+};
 </script>
 
 <style scoped>

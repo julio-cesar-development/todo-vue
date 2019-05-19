@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TaskGrid.vue TaskGrid.vue should contain a method deleteTask 1`] = `
+<div class="task-grid">
+  <task-stub task="[object Object]"></task-stub>
+  <task-stub task="[object Object]"></task-stub>
+</div>
+`;
+
+exports[`TaskGrid.vue TaskGrid.vue should match all specifications bellow 1`] = `
+<div class="task-grid">
+  <task-stub task="[object Object]"></task-stub>
+  <task-stub task="[object Object]"></task-stub>
+</div>
+`;

@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import TaskGrid from '@/components/TaskGrid';
-import TaskNew from '@/components/TaskNew';
-import TaskProgressBar from '@/components/TaskProgressBar';
-import { assertInt } from '@/utils/Assert.js';
+import TaskGrid from '@/components/TaskGrid.vue';
+import TaskNew from '@/components/TaskNew.vue';
+import TaskProgressBar from '@/components/TaskProgressBar.vue';
+import { assertInt } from '@/utils/Assert';
 
 export default {
   name: 'App',
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       tasks: [],
-    }
+    };
   },
   computed: {
     progress() {
@@ -37,7 +37,7 @@ export default {
       const done = this.tasks.filter(t => !t.pending).length;
       const calc = assertInt(done) / assertInt(total);
       return (calc || 0) * 100;
-    }
+    },
   },
   watch: {
     tasks: {
@@ -53,11 +53,15 @@ export default {
   methods: {
     addTask(task) {
       if (task.name) {
-        const isNew = this.tasks.filter(t => t.name.toString().toLowerCase() === task.name.toString().toLowerCase()).length === 0;
-        isNew && this.tasks.push({
-          'name': task.name.toString(),
-          'pending': task.pending || true,
-        });
+        const isNew = this.tasks.filter(
+          t => t.name.toString().toLowerCase() === task.name.toString().toLowerCase(),
+        ).length === 0;
+        if (isNew) {
+          this.tasks.push({
+            name: task.name.toString(),
+            pending: task.pending || true,
+          });
+        }
       }
     },
     deleteTask(idx) {
@@ -67,6 +71,7 @@ export default {
       this.tasks[idx].pending = !this.tasks[idx].pending;
     },
     setLocalStorage(tasks) {
+      /* eslint-disable no-param-reassign */
       if (tasks) {
         if (!Array.isArray(tasks)) {
           tasks = [];
@@ -78,14 +83,14 @@ export default {
     },
     getLocalStorage() {
       if (localStorage.getItem('tasks')) {
-        let tasks = JSON.parse(localStorage.getItem('tasks'));
+        const tasks = JSON.parse(localStorage.getItem('tasks'));
         return Array.isArray(tasks) ? tasks : [];
       }
       this.setLocalStorage();
       return [];
     },
   },
-}
+};
 </script>
 
 <style>
