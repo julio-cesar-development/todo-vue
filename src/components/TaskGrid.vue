@@ -4,6 +4,7 @@
       <task v-for="(task, idx) in tasks"
         v-bind:task="task"
         v-bind:key="task.name"
+        v-bind:tasks="tasks"
         v-on:task-deleted="deleteTask(idx)"
         v-on:task-state-changed="changeTaskState(idx)"
       />

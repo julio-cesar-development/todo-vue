@@ -31,6 +31,10 @@ export default {
       type: Object,
       required: true,
     },
+    tasks: {
+      type: Array,
+      required: true,
+    },
   },
   directives: {
     ClickOutside,
@@ -60,7 +64,9 @@ export default {
       this.editing = false;
       const value = e.target.value.trim();
       if (value) {
-        this.task.name = value;
+        if (!this.tasks.find(({ name }) => name === value)) {
+          this.task.name = value;
+        }
       } else {
         this.deleteTask();
       }

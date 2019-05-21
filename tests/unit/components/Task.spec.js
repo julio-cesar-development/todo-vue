@@ -8,6 +8,16 @@ describe('Task.vue', () => {
         name: 'Test 01',
         pending: false,
       },
+      tasks: [
+        {
+          name: 'Test 01',
+          pending: false,
+        },
+        {
+          name: 'Test 01',
+          pending: false,
+        },
+      ],
     };
     const wrapper = shallowMount(Task, {
       'propsData': props,
