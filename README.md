@@ -14,6 +14,15 @@ See project [ToDo Vue JS](https://todo-vue-tasks.netlify.com)
 
 ## Project setup
 
+> Running with docker
+
+```bash
+docker image build --tag todo-vue .
+docker container run --name todo-vue -p 80:80 todo-vue
+```
+
+> Running appart
+
 ```bash
 npm install
 ```

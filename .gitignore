@@ -24,3 +24,6 @@ yarn-error.log*
 *.sw*
 
 coverage
+package-lock.json
+
+login.txt
