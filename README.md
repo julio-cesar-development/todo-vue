@@ -1,7 +1,7 @@
 # ToDo Project
 
 > This is a ToDo project made with Vue JS
-It stores the data in Local Storage  
+It stores the data in Local Storage
 > It has unit tests with jest
 
 [![Build Status](https://badgen.net/travis/julio-cesar-development/todo-vue?icon=travis)](https://travis-ci.org/julio-cesar-development/todo-vue)
@@ -27,6 +27,7 @@ docker container run --name todo-vue -p 80:80 todo-vue
 
 ```bash
 kubectl apply -f ./k8s
+# Additionally you can add the node IP in your *hosts* file pointing to todo-vue.local and access https://todo-vue.local in your browser
 ```
 
 > Running with Terraform
