@@ -17,7 +17,9 @@ See project [ToDo Vue JS](https://todo-vue-tasks.netlify.com)
 > Running with docker
 
 ```bash
+# Build the image
 docker image build --tag todo-vue .
+# Run the image
 docker container run --name todo-vue -p 80:80 todo-vue
 ```
 
@@ -32,41 +34,24 @@ kubectl apply -f ./k8s
 ```bash
 terraform init
 terraform apply -auto-approve
-# or run the script
+# Or run the script
 ./run-terraform.sh
 ```
 
 > Running appart
 
 ```bash
+# Install dependencies
 npm install
-```
-
-### Compiles and hot-reloads for development
-
-```bash
+# Compiles and hot-reloads for development
 npm run serve
-```
-
-### Compiles and minifies for production
-
-```bash
+# Compiles and minifies for production
 npm run build
-```
-
-### Run your tests
-
-```bash
-# run tests
+# Run tests
 npm run test
-
-# run tests in watch mode
+# Run tests in watch mode
 npm run test:tdd
-```
-
-### Lints and fixes files
-
-```bash
+# Run lint
 npm run lint
 ```
 
