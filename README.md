@@ -21,6 +21,21 @@ docker image build --tag todo-vue .
 docker container run --name todo-vue -p 80:80 todo-vue
 ```
 
+> Running with kubernetes
+
+```bash
+kubectl apply -f ./k8s
+```
+
+> Running with Terraform
+
+```bash
+terraform init
+terraform apply -auto-approve
+# or run the script
+./run-terraform.sh
+```
+
 > Running appart
 
 ```bash

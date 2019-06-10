@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: webapp
+  template:
+    metadata:
+      labels:
+        component: webapp
+    spec:
+      containers:
+      - name: client
+        image: juliocesarmidia/todo-vue:v1.0.0
+        resources:
+          limits:
+            memory: "8Mi"
+            cpu: "30m"
+        ports:
+        - containerPort: 80
+      restartPolicy: Always

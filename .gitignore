@@ -27,3 +27,6 @@ coverage
 package-lock.json
 
 login.txt
+
+.terraform
+terraform.tfstate*
