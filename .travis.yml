@@ -8,3 +8,7 @@ script:
   - npm run test:unit
 after_script:
   - cat ./coverage/lcov.info | coveralls
+after_success:
+  - docker image build --tag juliocesarmidia/todo-vue:v1.0.0 .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker image push juliocesarmidia/todo-vue:v1.0.0

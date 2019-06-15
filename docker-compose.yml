@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    container_name: todo-vue-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    restart: always
+    networks:
+      - netlocal
+
+  test:
+    container_name: todo-vue-test
+    build:
+      context: .
+      dockerfile: Dockerfile-test
+    restart: "no"
+    networks:
+      - netlocal
+
+networks:
+  netlocal:
+    driver: bridge

@@ -17,17 +17,30 @@ See project [ToDo Vue JS](https://todo-vue-tasks.netlify.com)
 > Running with docker
 
 ```bash
-# Build the image
-docker image build --tag todo-vue .
-# Run the image
-docker container run --name todo-vue -p 80:80 todo-vue
+# Build the app image
+docker image build --tag todo-vue-app .
+# Run the app image
+docker container run --name todo-vue-app -p 80:80 todo-vue-app
+# Build the test image
+docker image build --tag todo-vue-test -f ./Dockerfile-test .
+# Run the test image
+docker container run --name todo-vue-test todo-vue-test
+```
+
+> Running with docker-compose
+
+```bash
+# Run app
+docker-compose up -d app
+# Run tests
+docker-compose up -d test
 ```
 
 > Running with kubernetes
 
 ```bash
+# Then access your cluster IP a port 31515
 kubectl apply -f ./k8s
-# Additionally you can add the node IP in your *hosts* file pointing to todo-vue.local and access https://todo-vue.local in your browser
 ```
 
 > Running with Terraform
