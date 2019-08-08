@@ -2,7 +2,7 @@
   <div id="app">
     <h1>{{ 'tarefas' | capitalize }}</h1>
     <div class="wrapper">
-      <task-progress-bar v-bind:progress="progress" />
+      <task-progress-bar v-bind:progress="tasksProgress" />
       <task-new v-on:task-added="addTask($event)" />
       <task-grid
         v-bind:tasks="tasks"
@@ -14,10 +14,11 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 import TaskGrid from '@/components/TaskGrid.vue';
 import TaskNew from '@/components/TaskNew.vue';
 import TaskProgressBar from '@/components/TaskProgressBar.vue';
-import { assertInt } from '@/utils/Assert';
+import { setTasksToLocalStorage, getTasksFromLocalStorage } from '@/services/setLocalStorage';
 
 export default {
   name: 'App',
@@ -26,68 +27,33 @@ export default {
     TaskNew,
     TaskProgressBar,
   },
-  data() {
-    return {
-      tasks: [],
-    };
-  },
   computed: {
-    progress() {
-      const total = this.tasks.length;
-      const done = this.tasks.filter(t => !t.pending).length;
-      const calc = assertInt(done) / assertInt(total);
-      return (calc || 0) * 100;
-    },
+    ...mapState({
+      tasks: state => state.Tasks.tasks,
+    }),
+    ...mapGetters('Tasks', ['tasksProgress']),
   },
   watch: {
     tasks: {
       handler() {
-        this.setLocalStorage(this.tasks);
+        setTasksToLocalStorage(this.tasks);
       },
       deep: true,
     },
   },
   mounted() {
-    this.tasks = this.getLocalStorage();
+    const tasks = getTasksFromLocalStorage();
+    this.$store.dispatch('Tasks/setTasks', tasks);
   },
   methods: {
     addTask(task) {
-      if (task.name) {
-        const isNew = this.tasks.filter(
-          t => t.name.toString().toLowerCase() === task.name.toString().toLowerCase(),
-        ).length === 0;
-        if (isNew) {
-          this.tasks.push({
-            name: task.name.toString(),
-            pending: task.pending || true,
-          });
-        }
-      }
+      this.$store.dispatch('Tasks/addTask', task);
     },
     deleteTask(idx) {
-      this.tasks.splice(idx, 1);
+      this.$store.dispatch('Tasks/deleteTask', idx);
     },
     changeTaskState(idx) {
-      this.tasks[idx].pending = !this.tasks[idx].pending;
-    },
-    setLocalStorage(tasks) {
-      /* eslint-disable no-param-reassign */
-      if (tasks) {
-        if (!Array.isArray(tasks)) {
-          tasks = [];
-        }
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-      } else {
-        localStorage.setItem('tasks', JSON.stringify([]));
-      }
-    },
-    getLocalStorage() {
-      if (localStorage.getItem('tasks')) {
-        const tasks = JSON.parse(localStorage.getItem('tasks'));
-        return Array.isArray(tasks) ? tasks : [];
-      }
-      this.setLocalStorage();
-      return [];
+      this.$store.dispatch('Tasks/changeTaskState', idx);
     },
   },
 };
