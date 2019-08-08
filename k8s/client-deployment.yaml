@@ -6,11 +6,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      component: webapp
+      component: todo_app
   template:
     metadata:
       labels:
-        component: webapp
+        component: todo_app
     spec:
       containers:
       - name: client
