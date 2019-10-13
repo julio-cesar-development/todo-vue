@@ -6,11 +6,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      component: todo_app
+      component: todoapp
   template:
     metadata:
       labels:
-        component: todo_app
+        component: todoapp
     spec:
       containers:
       - name: client
@@ -20,5 +20,6 @@ spec:
             memory: "8Mi"
             cpu: "30m"
         ports:
-        - containerPort: 80
+        - name: todoapp-port
+          containerPort: 80
       restartPolicy: Always

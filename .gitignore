@@ -28,5 +28,5 @@ package-lock.json
 
 login.txt
 
-.terraform
+.terraform*
 terraform.tfstate*

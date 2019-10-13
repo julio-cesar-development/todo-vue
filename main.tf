@@ -1,5 +1,5 @@
 # Defining provider
-provider "local"{}
+provider "local" {}
 
 # Outputting variables
 output "image" {
@@ -20,9 +20,10 @@ output "port" {
 
 # Start a container
 resource "docker_container" "application" {
-  image = "${docker_image.application.latest}"
+  image    = "${docker_image.application.latest}"
   must_run = true
-  name  = "${var.image_app_name}" # getting variable image_app_name from env
+  name     = "${var.image_app_name}"              # getting variable image_app_name from env
+
   ports {
     internal = "${var.port}" # getting variable port from env
     external = "${var.port}" # getting variable port from env

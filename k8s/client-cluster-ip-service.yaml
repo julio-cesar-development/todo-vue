@@ -1,11 +1,25 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-cluster-ip-service
+  name: todoapp-service
 spec:
   type: ClusterIP
   selector:
-    component: todo_app
+    component: todoapp
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: todoapp-port
+      protocol: TCP
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: todoapp-service
+# spec:
+#   ports:
+#   - port: 80
+#     targetPort: todoapp-port
+#     protocol: TCP
+#   selector:
+#     component: todoapp
+#   type: LoadBalancer
