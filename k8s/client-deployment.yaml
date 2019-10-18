@@ -4,6 +4,7 @@ metadata:
   name: client-deployment
 spec:
   replicas: 3
+  revisionHistoryLimit: 100
   selector:
     matchLabels:
       component: todoapp
@@ -15,6 +16,18 @@ spec:
       containers:
       - name: client
         image: juliocesarmidia/todo-vue:v1.0.0
+        livenessProbe:
+          httpGet:
+            path: /
+            port: todoapp-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /
+            port: todoapp-port
+          initialDelaySeconds: 15
+          timeoutSeconds: 30
         resources:
           limits:
             memory: "8Mi"
