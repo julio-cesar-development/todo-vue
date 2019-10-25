@@ -1,8 +1,9 @@
-FROM node:alpine
+FROM node:10-alpine
 LABEL maintainer="julio@blackdevs.com.br"
 
 WORKDIR /app
 COPY package.json /app
 RUN npm install
 COPY . /app
-RUN npm run test:unit
+
+CMD ["npm", "run", "test:unit"]

@@ -13,15 +13,17 @@ services:
     volumes:
       - /app/node_modules/
       - ./:/app
+    environment:
+      NODE_ENV: ${NODE_ENV:-dev}
 
-  test:
-    container_name: todo-vue-test
-    build:
-      context: .
-      dockerfile: Dockerfile-test
-    restart: "no"
-    networks:
-      - netlocal
+  # test:
+  #   container_name: todo-vue-test
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile-test
+  #   restart: "no"
+  #   networks:
+  #     - netlocal
 
 networks:
   netlocal:

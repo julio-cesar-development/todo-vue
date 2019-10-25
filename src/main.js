@@ -3,8 +3,8 @@ import App from '@/App.vue';
 import capitalize from '@/utils/Capitalize';
 import store from '@/store/index';
 
-Vue.config.productionTip = false;
-Vue.config.devtools = true;
+Vue.config.productionTip = process.env.NODE_ENV === 'production' || false;
+Vue.config.devtools = process.env.NODE_ENV !== 'production' || true;
 
 Vue.filter('capitalize', capitalize);
 

@@ -1,4 +1,4 @@
-FROM node:10 as builder
+FROM node:10-alpine as builder
 LABEL maintainer="julio@blackdevs.com.br"
 
 WORKDIR /app
@@ -8,7 +8,7 @@ COPY . /app
 
 EXPOSE 8080
 
-CMD ["npm", "run", "serve"]
+CMD ["npm", "run", "dev"]
 
 # docker image build --no-cache --tag juliocesarmidia/todo-vue-dev -f Dockerfile-dev .
 # docker image build --tag juliocesarmidia/todo-vue-dev -f Dockerfile-dev .
