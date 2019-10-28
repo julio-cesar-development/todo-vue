@@ -1,6 +1,6 @@
 version: v1.0.0
 
-client:
+todoapp:
   replicaCount: 3
   image:
     repository: juliocesarmidia/todo-vue
@@ -11,13 +11,23 @@ client:
     port: 80
     targetPort: 80
   secrets:
-    NODE_ENV: ZGV2
+    NODE_ENV: invalid
+  volumeMounts:
+    name: cred-volume
 
 ingress:
-    enabled: true
+  metadata:
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/rewrite-target: /
+  spec:
+    rules:
+      - http:
+          paths:
+            - path: /
+              backend:
+                serviceName: todoapp-service
+                servicePort: 80
 
 resources: {}
 # limits:

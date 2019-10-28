@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-deployment
+  name: todoapp-deployment
 spec:
   replicas: 3
   revisionHistoryLimit: 100
@@ -14,25 +14,53 @@ spec:
         component: todoapp
     spec:
       containers:
-      - name: client
-        image: juliocesarmidia/todo-vue:v1.0.0
-        livenessProbe:
-          httpGet:
-            path: /
-            port: todoapp-port
-          initialDelaySeconds: 15
-          timeoutSeconds: 30
-        readinessProbe:
-          httpGet:
-            path: /
-            port: todoapp-port
-          initialDelaySeconds: 15
-          timeoutSeconds: 30
-        resources:
-          limits:
-            memory: "8Mi"
-            cpu: "30m"
-        ports:
-        - name: todoapp-port
-          containerPort: 80
+        - name: client
+          image: juliocesarmidia/todo-vue:v1.0.0
+          ports:
+            - name: todoapp-port
+              containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: todoapp-port
+            initialDelaySeconds: 10
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: todoapp-port
+            initialDelaySeconds: 10
+            timeoutSeconds: 30
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  [
+                    "sh",
+                    "-c",
+                    'echo "$(date +%s): postStart" && echo "$NODE_ENV"',
+                  ]
+            preStop:
+              exec:
+                command:
+                  [
+                    "sh",
+                    "-c",
+                    'echo "$(date +%s): preStop" && echo "$NODE_ENV"',
+                  ]
+          volumeMounts:
+            - name: cred-volume
+              mountPath: /etc/creds
+              readOnly: true
+          env:
+            - name: NODE_ENV
+              value: dev
+          resources:
+            limits:
+              memory: "8Mi"
+              cpu: "30m"
       restartPolicy: Always
+      volumes:
+        - name: cred-volume
+          secret:
+            secretName: env-secrets

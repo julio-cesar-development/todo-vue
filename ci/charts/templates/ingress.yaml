@@ -1,0 +1,13 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: todoapp-ingress
+  labels:
+    component: todoapp
+  annotations:
+    {{- range $key, $val := .Values.ingress.metadata.annotations }}
+    {{ $key }}: {{ $val }}
+    {{- end}}
+spec:
+  rules:
+    {{- toYaml .Values.ingress.spec.rules | nindent 4 }}

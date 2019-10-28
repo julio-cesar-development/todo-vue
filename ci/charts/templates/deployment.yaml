@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp-deployment
+  labels:
+    component: todoapp
+spec:
+  replicas: {{ .Values.todoapp.replicaCount }}
+  selector:
+    matchLabels:
+      component: todoapp
+  template:
+    metadata:
+      labels:
+        component: todoapp
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.todoapp.image.repository }}:{{ .Values.todoapp.image.tag }}"
+          imagePullPolicy: {{ .Values.todoapp.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            {{- range $key, $val := .Values.todoapp.secrets }}
+            - name: {{ $key }}
+              value: {{ $val | b64dec }}
+            {{- end}}
+          volumeMounts:
+            - name: {{ .Values.todoapp.volumeMounts.name }}
+              mountPath: /etc/creds
+              readOnly: true
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      volumes:
+        - name: {{ .Values.todoapp.volumeMounts.name }}
+          secret:
+            secretName: env-secrets

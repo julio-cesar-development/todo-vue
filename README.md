@@ -36,20 +36,28 @@ docker-compose up -d app
 docker-compose up -d test
 ```
 
-> Running with kubernetes
+> Running with Kubernetes only
 
 ```bash
-# Then access your cluster IP a port 31515
 kubectl apply -f ./k8s
 ```
 
-> Running with Terraform
+> Running with Terraform and local docker
 
 ```bash
+cd ./terraform-docker
 terraform init
-terraform apply -auto-approve
+terraform apply --auto-approve
 # Or run the script
-./run-terraform.sh
+./terraform-docker/run-terraform.sh
+```
+
+> Running with Terraform, Kubernetes and Helm
+
+```bash
+cd ./ci
+terraform init
+terraform apply --auto-approve
 ```
 
 > Running appart
