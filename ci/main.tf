@@ -27,7 +27,7 @@ resource "null_resource" "application_deploy" {
 # HELM
 set -e
 
-# mkdir -p ./tools
+mkdir -p ./tools
 
 DATE="$(date +%Y-%m-%d)"
 
@@ -52,7 +52,7 @@ chmod +x ./kubectl && mv kubectl ./tools
 echo "Deploying at $${DATE}"
 ./tools/kubectl apply -f deploy.yaml
 
-# rm -Rf ./tools
+rm -Rf ./tools
 EOF
 
     environment = {
