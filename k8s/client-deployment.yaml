@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todoapp-deployment
+  namespace: default
+
 spec:
-  replicas: 3
+  # replicas: 3
   revisionHistoryLimit: 100
   selector:
     matchLabels:
@@ -108,9 +110,14 @@ spec:
             # limits.memory	                      The memory limit of the Pod
 
           resources:
+            requests:
+              memory: "128Mi"
+              cpu: "200m"
+
             limits:
-              memory: "8Mi"
-              cpu: "30m"
+              memory: "256Mi"
+              cpu: "500m"
+
       restartPolicy: Always
       volumes:
         - name: cred-volume

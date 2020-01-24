@@ -40,6 +40,8 @@ docker-compose up -d test
 
 ```bash
 kubectl apply -f ./k8s
+or
+chmod +x deploy.sh && . $_
 ```
 
 > Running with Terraform and local docker
