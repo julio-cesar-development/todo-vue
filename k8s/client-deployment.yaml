@@ -5,15 +5,24 @@ metadata:
   namespace: default
 
 spec:
-  # replicas: 3
-  revisionHistoryLimit: 100
+  replicas: 1
+  revisionHistoryLimit: 5
+
   selector:
     matchLabels:
       component: todoapp
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 3
+
   template:
     metadata:
       labels:
         component: todoapp
+
     spec:
       containers:
         - name: client
@@ -21,6 +30,7 @@ spec:
           ports:
             - name: todoapp-port
               containerPort: 80
+
           livenessProbe:
             httpGet:
               path: /
@@ -33,6 +43,7 @@ spec:
               port: todoapp-port
             initialDelaySeconds: 10
             timeoutSeconds: 30
+
           lifecycle:
             postStart:
               exec:
@@ -50,13 +61,20 @@ spec:
                     "-c",
                     'echo "$(date +%s): preStop" && echo "$NODE_ENV"',
                   ]
+
           volumeMounts:
-            - name: cred-volume
-              mountPath: /etc/creds
-              readOnly: true
+            - mountPath: /cache
+              name: cache-volume
+            # - name: cred-volume
+            #   mountPath: /etc/creds
+            #   readOnly: true
+
           env:
             - name: NODE_ENV
-              value: dev
+              valueFrom:
+                secretKeyRef:
+                  name: env-secrets
+                  key: NODE_ENV
 
             - name: _POD_IP
               valueFrom:
@@ -112,14 +130,17 @@ spec:
           resources:
             requests:
               memory: "128Mi"
-              cpu: "200m"
+              cpu: "150m"
 
             limits:
               memory: "256Mi"
-              cpu: "500m"
+              cpu: "300m"
 
       restartPolicy: Always
+
       volumes:
-        - name: cred-volume
-          secret:
-            secretName: env-secrets
+      - name: cache-volume
+        emptyDir: {}
+      #   - name: cred-volume
+      #     secret:
+      #       secretName: env-secrets

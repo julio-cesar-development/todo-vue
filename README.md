@@ -18,9 +18,9 @@ See project [ToDo Vue JS](https://todo-vue-tasks.netlify.com)
 
 ```bash
 # Build the app image
-docker image build --tag todo-vue-app .
+docker image build --tag todo-vue .
 # Run the app image
-docker container run --name todo-vue-app -p 80:80 todo-vue-app
+docker container run --name todo-vue -p 80:80 todo-vue
 # Build the test image
 docker image build --tag todo-vue-test -f ./Dockerfile-test .
 # Run the test image

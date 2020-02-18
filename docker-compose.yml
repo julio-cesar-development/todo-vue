@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    container_name: todo-vue-app
+    container_name: todo-vue
     build:
       context: .
       dockerfile: Dockerfile-dev

@@ -15,6 +15,6 @@ export const getTasksFromLocalStorage = () => {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
     return Array.isArray(tasks) ? tasks : [];
   }
-  this.setTasksToLocalStorage();
+  setTasksToLocalStorage();
   return [];
 };

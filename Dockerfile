@@ -7,7 +7,7 @@ RUN npm install
 COPY . /app
 RUN npm run build
 
-FROM nginx:1.15 as runner
+FROM nginx:1.15 as runtime
 EXPOSE 80
 COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html
 
