@@ -1,10 +1,11 @@
-version: '3'
+version: '3.4'
+
 services:
   app:
     container_name: todo-vue
     build:
       context: .
-      dockerfile: Dockerfile-dev
+      dockerfile: development.Dockerfile
     ports:
       - 8080:8080
     restart: always
@@ -15,15 +16,6 @@ services:
       - ./:/app
     environment:
       NODE_ENV: ${NODE_ENV:-dev}
-
-  test:
-    container_name: todo-vue-test
-    build:
-      context: .
-      dockerfile: Dockerfile-test
-    restart: "no"
-    networks:
-      - netlocal
 
 networks:
   netlocal:

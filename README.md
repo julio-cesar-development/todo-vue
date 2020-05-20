@@ -18,48 +18,37 @@ See project [ToDo Vue JS](https://todo-vue-tasks.netlify.com)
 
 ```bash
 # Build the app image
-docker image build --tag todo-vue .
+docker image build --tag todo-vue:latest .
 # Run the app image
-docker container run --name todo-vue -p 80:80 todo-vue
+docker container run --name todo-vue -p 80:80 todo-vue:latest
 # Build the test image
-docker image build --tag todo-vue-test -f ./Dockerfile-test .
+docker image build --tag todo-vue-test:latest -f ./test.Dockerfile .
 # Run the test image
-docker container run --name todo-vue-test todo-vue-test
+docker container run --name todo-vue-test todo-vue-test:latest
 ```
 
 > Running with docker-compose
 
 ```bash
 # Run app
-docker-compose up -d app
+docker-compose up -d
 # Run tests
-docker-compose up -d test
+docker-compose -f docker-compose-tests.yml up
 ```
 
-> Running with Kubernetes only
+> Running with Kubernetes
 
 ```bash
-kubectl apply -f ./k8s
-or
 chmod +x deploy.sh && . $_
 ```
 
-> Running with Terraform and local docker
+> Run workload tests
 
 ```bash
-cd ./terraform-docker
-terraform init
-terraform apply --auto-approve
-# Or run the script
-./terraform-docker/run-terraform.sh
-```
-
-> Running with Terraform, Kubernetes and Helm
-
-```bash
-cd ./ci
-terraform init
-terraform apply --auto-approve
+# -t threads
+# -c connections
+# -d timing
+docker run --rm -d williamyeh/wrk -t4 -c5000 -d20s -H 'Host: todo-vue.blackdevs.com.br' --timeout 2s http://todo-vue.blackdevs.com.br
 ```
 
 > Running appart
