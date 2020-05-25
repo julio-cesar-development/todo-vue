@@ -7,8 +7,8 @@
 # kubectl apply -f ./k8s/namespace.yaml
 
 # change context
-CURRENT_CONTEXT=$(kubectl config view | grep "current-context" | cut -d ":" -f2 | tr -d ' ')
-kubectl config set-context "${CURRENT_CONTEXT}" --namespace=blackdevs
+# CURRENT_CONTEXT=$(kubectl config view | grep "current-context" | cut -d ":" -f2 | tr -d ' ')
+# kubectl config set-context "${CURRENT_CONTEXT}" --namespace=blackdevs
 # kubectl config get-contexts
 
 # secrets

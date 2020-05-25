@@ -50,3 +50,7 @@ override.tf.json
 **/outputs/*
 
 deploy.yaml
+
+.terraform
+*.tfvars
+k8s-cluster-kubeconfig.yaml

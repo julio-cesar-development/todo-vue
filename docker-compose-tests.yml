@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  app_test:
-    container_name: app_test
+  todo-vue-test:
+    container_name: todo-vue-test
     build:
       context: .
       dockerfile: test.Dockerfile

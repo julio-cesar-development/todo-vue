@@ -17,12 +17,12 @@ after_script:
   - cat ./coverage/lcov.info | coveralls
 
 after_success:
-  # build latest image and 1.0.0 version
-  - docker image build --tag juliocesarmidia/todo-vue:v1.0.0 --tag juliocesarmidia/todo-vue:$SHA -f Dockerfile .
+  # build latest image and 2.0.0 version
+  - docker image build --tag juliocesarmidia/todo-vue:v2.0.0 --tag juliocesarmidia/todo-vue:$SHA -f Dockerfile .
 
   # log into docker registry account
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
-  # push latest image and 1.0.0 version to docker registry
-  - docker image push juliocesarmidia/todo-vue:v1.0.0
+  # push latest image and 2.0.0 version to docker registry
+  - docker image push juliocesarmidia/todo-vue:v2.0.0
   - docker image push juliocesarmidia/todo-vue:$SHA

@@ -2,44 +2,53 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todoapp-deployment
-  labels:
-    component: todoapp
+  namespace: default
+
 spec:
-  replicas: {{ .Values.todoapp.replicaCount }}
   selector:
     matchLabels:
       component: todoapp
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 3
+
   template:
     metadata:
       labels:
         component: todoapp
+
     spec:
       containers:
-        - name: {{ .Chart.Name }}
+        - name: todoapp-deployment
           image: "{{ .Values.todoapp.image.repository }}:{{ .Values.todoapp.image.tag }}"
-          imagePullPolicy: {{ .Values.todoapp.image.pullPolicy }}
+          pullPolicy: {{ .Values.todoapp.image.pullPolicypullPolicy }}
           ports:
-            - name: http
+            - name: todoapp-port
               containerPort: 80
-              protocol: TCP
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: todoapp-port
+            initialDelaySeconds: 10
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: todoapp-port
+            initialDelaySeconds: 10
+            timeoutSeconds: 30
+
           env:
             {{- range $key, $val := .Values.todoapp.secrets }}
             - name: {{ $key }}
               value: {{ $val | b64dec }}
             {{- end}}
-          volumeMounts:
-            - name: {{ .Values.todoapp.volumeMounts.name }}
-              mountPath: /etc/creds
-              readOnly: true
 
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+          resources:
+            {{- toYaml .Values.todoapp.resources | nindent 12 }}
 
-      volumes:
-        - name: {{ .Values.todoapp.volumeMounts.name }}
-          secret:
-            secretName: env-secrets
+      restartPolicy: Always

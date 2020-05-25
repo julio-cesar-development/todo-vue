@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  app:
-    container_name: todo-vue
+  todo-vue-app:
+    container_name: todo-vue-app
     build:
       context: .
       dockerfile: development.Dockerfile

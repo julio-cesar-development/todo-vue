@@ -4,16 +4,21 @@ todoapp:
   replicaCount: 3
   image:
     repository: juliocesarmidia/todo-vue
-    tag: v1.0.0
+    tag: v2.0.0
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
     port: 80
-    targetPort: 80
+    targetPort: todoapp-port
   secrets:
     NODE_ENV: invalid
-  volumeMounts:
-    name: cred-volume
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "150m"
+    limits:
+      memory: "256Mi"
+      cpu: "300m"
 
 ingress:
   metadata:
@@ -24,20 +29,13 @@ ingress:
       nginx.ingress.kubernetes.io/rewrite-target: /
   spec:
     rules:
-      - http:
-          paths:
-            - path: /
-              backend:
-                serviceName: todoapp-service
-                servicePort: 80
-
-resources: {}
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
+    - host: todo-vue.blackdevs.com.br
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: todoapp-service
+              servicePort: 80
 
 nodeSelector: {}
 

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1>{{ 'tarefas' | capitalize }}</h1>
+    <h1>{{ 'tarefas V2' | capitalize }}</h1>
     <div class="wrapper">
       <task-progress-bar v-bind:progress="tasksProgress" />
       <task-new v-on:task-added="addTask($event)" />
@@ -62,7 +62,7 @@ export default {
 <style>
 body {
   font-family: 'Lato', 'Calibri', 'sans-serif';
-  background: linear-gradient(to right, rgb(22, 34, 42), rgb(58, 96, 115));
+  background: linear-gradient(to right, rgb(30, 30, 50), rgb(58, 96, 115));
   color: #FFF;
   margin: 0px;
 }

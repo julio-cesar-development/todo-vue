@@ -2,12 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   name: todoapp-service
-  labels:
-    component: todoapp
+  namespace: default
+
 spec:
   type: {{ .Values.todoapp.service.type }}
-  ports:
-    - port: {{ .Values.todoapp.service.port }}
-      targetPort: {{ .Values.todoapp.service.targetPort }}
   selector:
     component: todoapp
+
+  ports:
+  - port: {{ .Values.todoapp.service.port }}
+    targetPort: {{ .Values.todoapp.service.targetPort }}
+    protocol: TCP
