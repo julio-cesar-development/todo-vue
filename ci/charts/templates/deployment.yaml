@@ -24,7 +24,7 @@ spec:
       containers:
         - name: todoapp-deployment
           image: "{{ .Values.todoapp.image.repository }}:{{ .Values.todoapp.image.tag }}"
-          pullPolicy: {{ .Values.todoapp.image.pullPolicypullPolicy }}
+          imagePullPolicy: {{ .Values.todoapp.image.imagePullPolicy }}
           ports:
             - name: todoapp-port
               containerPort: 80

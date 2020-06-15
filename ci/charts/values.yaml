@@ -5,7 +5,7 @@ todoapp:
   image:
     repository: juliocesarmidia/todo-vue
     tag: v2.0.0
-    pullPolicy: IfNotPresent
+    imagePullPolicy: IfNotPresent
   service:
     type: ClusterIP
     port: 80

@@ -23,8 +23,8 @@ spec:
     spec:
       containers:
         - name: todoapp-deployment
-          image: juliocesarmidia/todo-vue:v1.0.0
-          pullPolicy: IfNotPresent
+          image: juliocesarmidia/todo-vue:v2.0.0
+          imagePullPolicy: IfNotPresent
           ports:
             - name: todoapp-port
               containerPort: 80
