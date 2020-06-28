@@ -1,0 +1,23 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: julio@blackdevs.com.br
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    # An empty 'selector' means that this solver matches all domains
+    - selector: {}
+      dns01:
+        route53:
+          hostedZoneID: {{ .Values.certIssuer.hostedZoneID }}
+          region: sa-east-1
+          accessKeyID: {{ .Values.certIssuer.awsAccessKey }}
+          secretAccessKeySecretRef:
+            name: aws-secrets
+            key: AWS_SECRET_ACCESS_KEY

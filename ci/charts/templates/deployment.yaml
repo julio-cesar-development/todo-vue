@@ -2,9 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todoapp-deployment
-  namespace: default
+  namespace: {{ .Values.todoapp.namespace }}
 
 spec:
+  replicas: {{ .Values.todoapp.replicaCount }}
   selector:
     matchLabels:
       component: todoapp
@@ -27,7 +28,7 @@ spec:
           imagePullPolicy: {{ .Values.todoapp.image.imagePullPolicy }}
           ports:
             - name: todoapp-port
-              containerPort: 80
+              containerPort: {{ .Values.todoapp.containerPort }}
 
           livenessProbe:
             httpGet:
@@ -45,7 +46,7 @@ spec:
           env:
             {{- range $key, $val := .Values.todoapp.secrets }}
             - name: {{ $key }}
-              value: {{ $val | b64dec }}
+              value: {{ $val }}
             {{- end}}
 
           resources:

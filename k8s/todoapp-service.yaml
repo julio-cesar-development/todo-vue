@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: todoapp-service
-  namespace: default
+  namespace: blackdevs
 
 spec:
   type: ClusterIP

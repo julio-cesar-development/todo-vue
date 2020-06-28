@@ -1,5 +1,11 @@
 terraform {
   required_version = "~> 0.12.0"
+
+  backend "s3" {
+    bucket = "blackdevs-aws"
+    key    = "terraform/todoapp/state.tfstate"
+    region = "sa-east-1"
+  }
 }
 
 resource "local_file" "cluster_kubeconfig" {
@@ -12,41 +18,104 @@ resource "null_resource" "application_deploy" {
     command = <<EOF
 # set -e
 
-mkdir -p ./tools
+# download and install kubectl
+if [ -z $(which kubectl) ]; then
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl
+  chmod +x ./kubectl && mv kubectl /usr/local/bin
+fi
 
-DATE="$(date +%Y-%m-%d)"
+# download and install helm
+if [ -z $(which helm) ]; then
+  curl -LO https://get.helm.sh/helm-v3.2.0-linux-amd64.tar.gz
+  tar -zxvf ./helm-v3.2.0-linux-amd64.tar.gz && \
+    mv ./linux-amd64/helm /usr/local/bin/helm && \
+    rm -rf ./linux-amd64/ && rm -f ./helm-v3.2.0-linux-amd64.tar.gz
+fi
 
-curl -LO https://get.helm.sh/helm-v2.14.3-linux-amd64.tar.gz
-tar xvf helm-v2.14.3-linux-amd64.tar.gz && mv ./linux-amd64/helm ./tools
-rm -Rf ./linux-amd64 helm-v2.14.3-linux-amd64.tar.gz
+# create namespace for application
+kubectl create namespace $APP_NAMESPACE 2>/dev/null
 
-# NODE_ENV=$(echo -n $${NODE_ENV} | base64 -d)
-NODE_ENV=$(echo -n $${NODE_ENV})
-echo "NODE_ENV $${NODE_ENV}"
 
-echo "Generating templates"
+# install nginx ingress
+kubectl create namespace ingress-nginx 2>/dev/null
+
+INGRESS_INSTALLED=$(helm ls --all -n ingress-nginx 2> /dev/null | grep -ic "deployed")
+if [ $INGRESS_INSTALLED -eq 0 ]; then
+  # add ingress controller repo and update repos
+  helm repo add nginx-stable https://helm.nginx.com/stable
+  echo "repo added"
+  # install ingress controller
+  helm install ingress-nginx \
+    -n ingress-nginx \
+    --set controller.name="ingress-nginx" \
+    --set controller.kind=deployment \
+    --set controller.service.name=ingress-nginx \
+    nginx-stable/nginx-ingress
+  echo "release installed"
+fi
+# check if ingress controller is up and running
+while [ $(kubectl get pods -n ingress-nginx -l app=ingress-nginx | grep -ic "running") -eq 0 ]; do
+  echo "waiting for ingress controller pod be running"
+  sleep 2
+done
+
+
+# install cert manager
+kubectl create namespace cert-manager 2>/dev/null
+kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true --overwrite
+
+CERT_MANAGER_INSTALLED=$(helm ls --all -n cert-manager 2> /dev/null | grep -ic "deployed")
+if [ $CERT_MANAGER_INSTALLED -eq 0 ]; then
+  # add cert-manager repo and update repos
+  helm repo add jetstack https://charts.jetstack.io
+  helm repo update
+
+  helm install cert-manager \
+    jetstack/cert-manager \
+    --namespace cert-manager \
+    --version v0.15.1 \
+    --set installCRDs=true \
+    --set 'extraArgs={--dns01-recursive-nameservers=8.8.8.8:53\,1.1.1.1:53}'
+fi
+# check if ingress controller is up and running
+while [ $(kubectl get pods -n cert-manager -l app=cert-manager | grep -ic "running") -eq 0 ]; do
+  echo "waiting for cert manager pod be running"
+  sleep 2
+done
+
+
+echo "Deploying"
 helm template \
-  --set todoapp.secrets.NODE_ENV=$${NODE_ENV} \
-  --set todoapp.image.tag=$${VERSION} \
+  --set todoapp.image.repository=$APP_IMAGE \
+  --set todoapp.image.tag=$APP_VERSION \
+  --set todoapp.secrets.NODE_ENV=$APP_ENV \
+  --set todoapp.replicaCount=$APP_REPLICA_COUNT \
+  --set todoapp.namespace=$APP_NAMESPACE \
+  --set certIssuer.awsAccessKey=$AWS_ACCESS_KEY \
+  --set certIssuer.awsSecretKey=$AWS_SECRET_KEY \
+  --set certIssuer.hostedZoneID=$AWS_HOSTED_ZONE \
   ./charts > deploy.yaml
 
-curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.16.0/bin/linux/amd64/kubectl
-chmod +x ./kubectl && mv kubectl ./tools
 
-echo "Deploying at $${DATE}"
-./tools/kubectl apply -f deploy.yaml
-
-rm -Rf ./tools
+kubectl apply -f deploy.yaml
 EOF
 
     environment = {
-      VERSION = "${var.app_version}"
-      NODE_ENV = "${var.app_config.NODE_ENV}"
+      APP_IMAGE = var.app_image
+      APP_VERSION = var.app_version
+      APP_ENV = var.app_env
+      APP_REPLICA_COUNT = var.app_replica_count
+      APP_NAMESPACE = var.app_namespace
+      AWS_ACCESS_KEY = var.aws_access_key
+      AWS_SECRET_KEY = var.aws_secret_key
+      AWS_HOSTED_ZONE = var.aws_hosted_zone_id
       KUBECONFIG = local_file.cluster_kubeconfig.filename
     }
   }
 }
 
-# terraform init && terraform plan
+# terraform init -backend=true
+# terraform validate
+# terraform plan
 # terraform apply -auto-approve
 # terraform destroy -auto-approve

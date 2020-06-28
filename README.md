@@ -4,7 +4,7 @@
 It stores the data in Local Storage
 > It has unit tests with jest
 
-[![Build Status](https://badgen.net/travis/julio-cesar-development/todo-vue?icon=travis)](https://travis-ci.com/julio-cesar-development/todo-vue)
+[![Build Status](https://travis-ci.org/julio-cesar-development/todo-vue.svg)](https://travis-ci.org/julio-cesar-development/todo-vue)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/35949db2-73aa-4155-b376-e36ad9a163ec/deploy-status)](https://app.netlify.com/sites/todo-vue-tasks/deploys)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=julio-cesar-development_todo-vue&metric=alert_status)](https://sonarcloud.io/dashboard?id=julio-cesar-development_todo-vue)
 [![Coverage Status](https://coveralls.io/repos/github/julio-cesar-development/todo-vue/badge.svg?branch=master)](https://coveralls.io/github/julio-cesar-development/todo-vue?branch=master)
@@ -36,10 +36,10 @@ docker-compose up -d
 docker-compose -f docker-compose-tests.yml up
 ```
 
-> Running with Kubernetes
+> Running with Kubernetes locally (requires Nginx ingress controller running)
 
 ```bash
-chmod +x deploy.sh && . $_
+chmod +x deploy.sh && bash deploy.sh
 ```
 
 > Run workload tests

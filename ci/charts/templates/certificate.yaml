@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: todoapp-certificate
+  namespace: {{ .Values.todoapp.namespace }}
+
+spec:
+  secretName: todoapp-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+    - 'todoapp.onaws.blackdevs.com.br'

@@ -1,0 +1,3 @@
+aws_access_key = "invalid"
+aws_secret_key = "invalid"
+aws_hosted_zone_id = "invalid"

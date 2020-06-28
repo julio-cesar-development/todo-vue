@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: todoapp-hpa
-  namespace: default
+  namespace: blackdevs
 
 spec:
   scaleTargetRef:
@@ -11,8 +11,7 @@ spec:
     name: todoapp-deployment
 
   minReplicas: 1
-  maxReplicas: 10
-  # targetCPUUtilizationPercentage: 80
+  maxReplicas: 3
 
   metrics:
   - type: Resource

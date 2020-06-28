@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: todoapp-deployment
-  namespace: default
+  namespace: blackdevs
 
 spec:
   selector:
@@ -46,7 +46,7 @@ spec:
             - name: NODE_ENV
               valueFrom:
                 secretKeyRef:
-                  name: env-secrets
+                  name: todoapp-secrets
                   key: NODE_ENV
 
           resources:
